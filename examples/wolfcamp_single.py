@@ -42,7 +42,7 @@ import matplotlib.pyplot as plt
 
 # create a Log object by reading a file path  #
 
-las_file_path = '42303347740000.las'
+las_file_path = r'examples\42303347740000.las'
 log = ptr.Log(las_file_path)
 
 ### 2. load tops ###
@@ -163,8 +163,8 @@ stats_curves = ['OIP', 'BVH', 'PHIE', 'SW', 'VCLAY', 'TOC']
 # already included in the csv file            #
 
 log.statistics_to_csv('wfmp_statistics.csv', replace = True,
-                      formations = f, curves = stats_curves,
-                      pay_flags = pay_flags, facies = facies_curves)
+                      formations = f, curves = stats_curves,)
+                    #   pay_flags = pay_flags, facies = facies_curves)
 
 ### 11. export data ###
 
