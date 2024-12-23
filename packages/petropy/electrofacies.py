@@ -96,7 +96,7 @@ def electrofacies(logs, formations, curves, n_clusters, log_scale = [],
             bottom = log.next_formation_depth(formation)
             depth_index = np.intersect1d(np.where(log[0] >= top)[0],
                                          np.where(log[0] < bottom)[0])
-            df = df.append(log_df.iloc[depth_index])
+            df = pd.concat([log_df.iloc[depth_index]])
 
     for s in log_scale:
         df[s] = np.log(df[s])

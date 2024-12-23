@@ -2650,9 +2650,12 @@ class Log(LASFile):
                             (prev_df.FORMATION == row.FORMATION)].index
 
                 prev_df.drop(drop_indexes, inplace = True)
-            new_df = prev_df.append(new_df)
+            new_df = pd.concat([prev_df, new_df])
+
+
         else:
-            new_df = prev_df.append(new_df)
+            new_df = pd.concat([prev_df, new_df])
+
 
         new_df = new_df.set_index(['UWI', 'FORMATION'])
 

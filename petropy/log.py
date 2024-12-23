@@ -1052,7 +1052,7 @@ class Log(LASFile):
 
         param_df = pd.read_csv(csv_path)
         param_df = param_df.set_index('name')
-
+        print('hi==============')
         self.multimineral_parameters=param_df.to_dict(orient = 'index')
 
 
