@@ -215,7 +215,7 @@ class LogViewer(object):
 
             formation_top = self.log.tops[name]
             formation_bottom = self.log.next_formation_depth(name)
-            for ax in axes:
+            for ax in self.axes:
                 ax.axhspan(formation_top, formation_bottom, facecolor = color, alpha = alpha)
 
         numbers = None
