@@ -657,15 +657,32 @@ class LogViewer(object):
 
         mngr = self.fig.canvas.manager
         geom = mngr.window.geometry()
-        x, y, dx, dy = geom.getRect()
-        if isinstance(edit_mode, tuple) and len(edit_mode) == 2:
-            x, y = edit_mode  # If edit_mode is a tuple with 2 values (x, y)
-        elif edit_mode:  # If edit_mode is just True or False, handle it accordingly
-            x, y = 100, 100  # Default coordinates, for example
-        else:
-            x, y = 0, 0  # Another fallback for False
 
-        mngr.window.setGeometry(x, y, dx, dy)
+        # Check if geom is a string and attempt to handle it accordingly
+        if isinstance(geom, str):
+            # For strings like "200x200+152+152", parse it using regular expression or manually
+            try:
+                # Split the string into dimensions and position parts
+                dimensions, position = geom.split('+')
+                dx, dy = map(int, dimensions.split('x'))
+                x, y = map(int, position.split('+'))
+            except ValueError:
+                # print(f"Error parsing geometry string: {geom}")
+                # Set default values if parsing fails
+                x, y, dx, dy = 2, 2, 1800, 1000  # Default values
+        else:
+            try:
+                # If geom is an object with getRect, use it to get the coordinates
+                x, y, dx, dy = geom.getRect()
+            except AttributeError:
+                # print(f"Error: geom object does not have 'getRect' method: {geom}")
+                # Fallback to default values in case of error
+                x, y, dx, dy = 100, 100, 1000, 1000  # Default values
+
+        # Set the geometry using Tkinter's geometry() method
+        mngr.window.geometry(f"{dx}x{dy}+{x}+{y}")
+
+
 
         if edit_mode:
 
@@ -684,8 +701,14 @@ class LogViewer(object):
             edit_y = y
             mngr = self.edit_fig.canvas.manager
             geom = mngr.window.geometry()
-            x, y, dx, dy = geom.getRect()
-            mngr.window.setGeometry(edit_x, edit_y, 225, 225)
+            if isinstance(geom, str):
+            # Parse geometry string for edit window
+                dx, dy = 500, 400  # Default size for edit window
+            else:
+                x, y, dx, dy = geom.getRect()
+
+            mngr.window.geometry(f"{dx}x{dy}+{edit_x}+{edit_y}")
+
 
         plt.show()
 
